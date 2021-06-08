@@ -4,6 +4,7 @@ const OtherQuestionType = require('./other_questions');
 const ContactType = require('./contact');
 const EventType = require('./event');
 const EventRegUserType = require('./event_reg_user');
+const UserAnswersType = require('./user_answer')
 
 module.exports = {
     AdminType, 
@@ -11,5 +12,6 @@ module.exports = {
     OtherQuestionType, 
     ContactType,
     EventType,
-    EventRegUserType
+    EventRegUserType,
+    UserAnswersType
 };

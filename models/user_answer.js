@@ -8,7 +8,7 @@ const {
 } = require("graphql");
 
 const UserAnswers = new GraphQLObjectType({
-  name: "User Answers",
+  name: "UserAnswers",
   description: "User Answers Schema",
   fields: () => ({
     _id: {
@@ -37,7 +37,7 @@ async function loadDataBase() {
     return client.db("eventmng").collection("user_answers");
 }
 
-const UserType = {
+const UserAnswersType = {
     type: new GraphQLList(UserAnswers),
     description: 'User Answers',
     resolve: async () => {
@@ -46,4 +46,4 @@ const UserType = {
     }
 }
 
-module.exports = UserType;
+module.exports = UserAnswersType;
