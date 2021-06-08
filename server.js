@@ -5,7 +5,7 @@ const {
     AdminType, 
     UserType, 
     OtherQuestionType, 
-    ContactType, 
+    ContactModel, 
     EventType, 
     EventRegUserType, 
     UserAnswersType
@@ -23,15 +23,24 @@ const RootQueryType = new GraphQLObjectType({
         admins: AdminType,
         users : UserType,
         otherquestions: OtherQuestionType,
-        contacts: ContactType,
+        contacts: ContactModel.ContactType,
         events: EventType,
         event_reg_user: EventRegUserType,
         user_answers: UserAnswersType
     })
+});
+
+const RootMutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    description: 'Root Mutation',
+    fields: () => ({
+        insertContact: ContactModel.insertContact
+    })
 })
 
 const schema = new GraphQLSchema({
-    query: RootQueryType
+    query: RootQueryType,
+    mutation: RootMutationType
 });
 
 const app = express()
