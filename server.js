@@ -2,19 +2,13 @@ const express = require('express');
 // const mongodb = require("mongodb");
 const expressGraphQL = require('express-graphql').graphqlHTTP;
 const {
-    AdminType, UserType, OtherQuestionType, ContactType
+    AdminType, UserType, OtherQuestionType, ContactType, EventType
 } = require('./models');
 
 const {
     GraphQLSchema,
-    GraphQLObjectType,
-    // GraphQLString,
-    GraphQLList
+    GraphQLObjectType
 } = require('graphql');
-
-const Admins = [
-    {_id: 1, admin_username: "Admin", admin_password: "Admin"},
-];
 
 const RootQueryType = new GraphQLObjectType({
     name: 'Query',
@@ -23,7 +17,8 @@ const RootQueryType = new GraphQLObjectType({
         admins: AdminType,
         users : UserType,
         otherquestions: OtherQuestionType,
-        contacts: ContactType
+        contacts: ContactType,
+        events: EventType
     })
 })
 
