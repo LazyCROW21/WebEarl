@@ -10,6 +10,7 @@ mutation: Mutation
 ---
 
 ### FIELDS
+```
 admins(username: String!password: String!): Admins
 Admin
 
@@ -30,11 +31,12 @@ Event Registered Users
 
 user_answers: [UserAnswers]
 User Answers
+```
 
 ---
 
 ### Root Mutation
-
+```
 insertContact(
 contact_name: String!
 contact_emailid: String!
@@ -113,3 +115,4 @@ user_address: String!
 user_city: String!
 ): EventRegUser
 Register a user for the event
+```
