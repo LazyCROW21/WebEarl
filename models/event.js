@@ -69,7 +69,7 @@ const Event = new GraphQLObjectType({
     e_speaker_three_designation: {
       type: GraphQLString,
     },
-    e_staus: {
+    e_status: {
       type: GraphQLNonNull(GraphQLString),
     },
     template_id: {
@@ -94,7 +94,7 @@ const EventType = {
   description: "Event",
   resolve: async () => {
     let event_col = await loadDataBase();
-    return event_col.find({ e_staus: "active" }).toArray();
+    return event_col.find({ e_status: "active" }).toArray();
   },
 };
 
@@ -156,7 +156,7 @@ const InsertEvent = {
     e_speaker_three_designation: {
       type: GraphQLString,
     },
-    e_staus: {
+    e_status: {
       type: GraphQLNonNull(GraphQLString),
     },
     template_id: {
@@ -230,7 +230,7 @@ const UpdateEvent = {
     e_speaker_three_designation: {
       type: GraphQLString,
     },
-    e_staus: {
+    e_status: {
       type: GraphQLString,
     },
     template_id: {

@@ -7,7 +7,7 @@ const {
     OtherQuestionModel, 
     ContactModel, 
     EventModel, 
-    EventRegUserType, 
+    EventRegUserModel, 
     UserAnswerModel
 } = require('./models');
 
@@ -25,7 +25,7 @@ const RootQueryType = new GraphQLObjectType({
         otherquestions: OtherQuestionModel.OtherQuestionType,
         contacts: ContactModel.ContactType,
         events: EventModel.EventType,
-        event_reg_user: EventRegUserType,
+        event_reg_user: EventRegUserModel.EventRegUserType,
         user_answers: UserAnswerModel.UserAnswersType
     })
 });
@@ -38,7 +38,8 @@ const RootMutationType = new GraphQLObjectType({
         insertEvent: EventModel.InsertEvent,
         updateEvent: EventModel.UpdateEvent,
         otherQuestionInsert: OtherQuestionModel.OtherQuestionInsert,
-        insertAnswer: UserAnswerModel.insertAnswer
+        insertAnswer: UserAnswerModel.insertAnswer,
+        registerUserEvent: EventRegUserModel.RegisterUser
     })
 })
 
