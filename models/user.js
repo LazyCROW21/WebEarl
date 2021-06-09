@@ -1,4 +1,5 @@
 const mongodb = require("mongodb");
+const config = require('../server.config');
 const { 
     GraphQLObjectType, 
     GraphQLString,
@@ -40,7 +41,7 @@ const User = new GraphQLObjectType({
 
 async function loadDataBase() {
     const client = await mongodb.MongoClient.connect(
-      "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+      config.DB_URL,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

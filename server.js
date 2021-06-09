@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('./server.config');
 // const mongodb = require("mongodb");
 const expressGraphQL = require('express-graphql').graphqlHTTP;
 const {
@@ -49,7 +50,7 @@ const schema = new GraphQLSchema({
 });
 
 const app = express()
-const PORT = 5000;
+const PORT = config.SERVER_PORT || 5000;
 
 app.use('/graphql', expressGraphQL({
     schema: schema,
