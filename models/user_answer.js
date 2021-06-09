@@ -1,10 +1,10 @@
 const mongodb = require("mongodb");
-const { 
-    GraphQLObjectType, 
-    GraphQLString,
-    GraphQLList,
-    GraphQLID,
-    GraphQLNonNull
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList,
+  GraphQLID,
+  GraphQLNonNull,
 } = require("graphql");
 
 const UserAnswers = new GraphQLObjectType({
@@ -15,18 +15,53 @@ const UserAnswers = new GraphQLObjectType({
       type: GraphQLNonNull(GraphQLID),
     },
     oq_id: {
-        type: GraphQLNonNull(GraphQLID),
+      type: GraphQLNonNull(GraphQLID),
     },
     user_id: {
-        type: GraphQLNonNull(GraphQLID),
+      type: GraphQLNonNull(GraphQLID),
     },
     answer: {
-        type: GraphQLNonNull(GraphQLString),
-    }
+      type: GraphQLNonNull(GraphQLString),
+    },
   }),
 });
 
 async function loadDataBase() {
+  const client = await mongodb.MongoClient.connect(
+    "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  );
+  return client.db("eventmng").collection("user_answers");
+}
+
+const UserAnswersType = {
+  type: new GraphQLList(UserAnswers),
+  description: "User Answers",
+  resolve: async () => {
+    let user_col = await loadDataBase();
+    return user_col.find().toArray();
+  },
+};
+
+const insertAnswer = {
+  type: UserAnswers,
+  description: "Insert an answer",
+  args: {
+    oq_id: {
+      type: GraphQLNonNull(GraphQLID),
+    },
+    user_id: {
+      type: GraphQLNonNull(GraphQLID),
+    },
+    answer: {
+      type: GraphQLNonNull(GraphQLString),
+    },
+  },
+  resolve: async (parent, args) => {
+    // checking if id exist
     const client = await mongodb.MongoClient.connect(
       "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
       {
@@ -34,16 +69,39 @@ async function loadDataBase() {
         useUnifiedTopology: true,
       }
     );
-    return client.db("eventmng").collection("user_answers");
-}
-
-const UserAnswersType = {
-    type: new GraphQLList(UserAnswers),
-    description: 'User Answers',
-    resolve: async () => {
-        let user_col = await loadDataBase();
-        return user_col.find().toArray();
+    var db = client.db("eventmng");
+    var resp = await db.collection("otherquestions").findOne({
+      _id: mongodb.ObjectID(args.oq_id)
+    });
+    if(!resp) {
+      return {
+        _id: "error",
+        oq_id: "error",
+        user_id: "error",
+        answer: "error"
+      };
     }
-}
+    resp = await db.collection("users").findOne({
+      _id: mongodb.ObjectID(args.user_id)
+    });
+    if(!resp) {
+      return {
+        _id: "error",
+        oq_id: "error",
+        user_id: "error",
+        answer: "error"
+      };
+    }
 
-module.exports = UserAnswersType;
+    // actual inserting
+    resp = await db.collection("user_answers").insertOne({
+      oq_id: mongodb.ObjectID(args.oq_id),
+      user_id: mongodb.ObjectID(args.user_id),
+      answer: args.answer
+    });
+    const result = { ...args, _id: resp.insertedId };
+    return result;
+  },
+};
+
+module.exports = { UserAnswersType, insertAnswer };
