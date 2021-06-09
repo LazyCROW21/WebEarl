@@ -4,7 +4,7 @@ const expressGraphQL = require('express-graphql').graphqlHTTP;
 const {
     AdminType, 
     UserType, 
-    OtherQuestionType, 
+    OtherQuestionModel, 
     ContactModel, 
     EventModel, 
     EventRegUserType, 
@@ -22,7 +22,7 @@ const RootQueryType = new GraphQLObjectType({
     fields: () => ({
         admins: AdminType,
         users : UserType,
-        otherquestions: OtherQuestionType,
+        otherquestions: OtherQuestionModel.OtherQuestionType,
         contacts: ContactModel.ContactType,
         events: EventModel.EventType,
         event_reg_user: EventRegUserType,
@@ -36,7 +36,8 @@ const RootMutationType = new GraphQLObjectType({
     fields: () => ({
         insertContact: ContactModel.insertContact,
         insertEvent: EventModel.InsertEvent,
-        updateEvent: EventModel.UpdateEvent
+        updateEvent: EventModel.UpdateEvent,
+        otherQuestionInsert: OtherQuestionModel.OtherQuestionInsert
     })
 })
 
