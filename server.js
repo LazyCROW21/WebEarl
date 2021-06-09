@@ -35,7 +35,8 @@ const RootMutationType = new GraphQLObjectType({
     description: 'Root Mutation',
     fields: () => ({
         insertContact: ContactModel.insertContact,
-        insertEvent: EventModel.InsertEvent
+        insertEvent: EventModel.InsertEvent,
+        updateEvent: EventModel.UpdateEvent
     })
 })
 
@@ -53,5 +54,5 @@ app.use('/graphql', expressGraphQL({
 }))
 
 app.listen(PORT, () => {
-    console.log("Server Running at Port:" + PORT);
+    console.log("Server Running at Port: " + PORT);
 })

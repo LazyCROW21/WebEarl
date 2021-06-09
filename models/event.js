@@ -94,7 +94,7 @@ const EventType = {
   description: "Event",
   resolve: async () => {
     let event_col = await loadDataBase();
-    return event_col.find().toArray();
+    return event_col.find({ e_staus: "active" }).toArray();
   },
 };
 
@@ -171,4 +171,83 @@ const InsertEvent = {
   },
 };
 
-module.exports = {EventType, InsertEvent};
+const UpdateEvent = {
+  type: Event,
+  description: "Update an event",
+  args: {
+    _id: { type: GraphQLNonNull(GraphQLID) },
+    e_title: {
+      type: GraphQLString,
+    },
+    e_sub_title: {
+      type: GraphQLString,
+    },
+    e_about_title: {
+      type: GraphQLString,
+    },
+    e_about_text: {
+      type: GraphQLString,
+    },
+    // Date & Time can of int(timestamp) combined together OR
+    // Date can be String(DD-MM-YYYY)
+    e_date: {
+      type: GraphQLString,
+    },
+    // Time can be String(hh:mm p)
+    e_time: {
+      type: GraphQLString,
+    },
+    e_venue: {
+      type: GraphQLString,
+    },
+    e_venue_link: {
+      type: GraphQLString,
+    },
+    e_speaker_one: {
+      type: GraphQLString,
+    },
+    e_speaker_two: {
+      type: GraphQLString,
+    },
+    e_speaker_three: {
+      type: GraphQLString,
+    },
+    e_speaker_one_photo: {
+      type: GraphQLString,
+    },
+    e_speaker_two_photo: {
+      type: GraphQLString,
+    },
+    e_speaker_three_photo: {
+      type: GraphQLString,
+    },
+    e_speaker_one_designation: {
+      type: GraphQLString,
+    },
+    e_speaker_two_designation: {
+      type: GraphQLString,
+    },
+    e_speaker_three_designation: {
+      type: GraphQLString,
+    },
+    e_staus: {
+      type: GraphQLString,
+    },
+    template_id: {
+      type: GraphQLInt,
+    },
+  },  
+  resolve: async (parent, args) => {
+    let event_col = await loadDataBase();
+    let data = args;
+    var query = { _id: mongodb.ObjectID(args._id) };
+    delete data._id;
+    let update = { $set: data};
+    let resp = await event_col.updateOne(query, update);
+    // const result = { ...args, _id: resp.insertedId };
+    // console.log(resp);
+    return event_col.findOne(query);
+  },
+};
+
+module.exports = { EventType, InsertEvent, UpdateEvent };
