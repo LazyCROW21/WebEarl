@@ -54,7 +54,7 @@ const PORT = config.SERVER_PORT || 5000;
 
 app.use('/graphql', expressGraphQL({
     schema: schema,
-    graphiql: true
+    graphiql: config.ENVIRONMENT === 'development'
 }))
 
 app.listen(PORT, () => {
